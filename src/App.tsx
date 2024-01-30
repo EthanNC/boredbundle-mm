@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { useAction, useMutation, useQuery } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Link } from "@/components/typography/link";
 
 function App() {
-  const findGame = useQuery(api.games.get, { tokenIdentifier: "numbers" });
+  // const findGame = useQuery(api.games.get, { tokenIdentifier: "numbers" });
   const listGames = useQuery(api.games.list);
   const createGame = useAction(api.actions.createGame);
   // const addNumber = useMutation(api.myFunctions.addNumber);

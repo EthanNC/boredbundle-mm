@@ -41,6 +41,8 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@tanstack/react-router": "^1.15.7",
+    "@tanstack/router-vite-plugin": "^1.15.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
@@ -56,6 +58,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@tanstack/router-devtools": "^1.15.7",
     "@types/node": "^20.7.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",

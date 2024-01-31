@@ -7,7 +7,7 @@ import { ulid } from "ulid";
 export const createGame = action({
   args: { body: v.string() },
   handler: async (ctx, { body }) => {
-    const gameId = ulid();
+    const gameId = ulid().slice(-5);
     await ctx.runMutation(internal.myFunctions.create, {
       body: body,
       gameId: gameId,

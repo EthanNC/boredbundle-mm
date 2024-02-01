@@ -1,14 +1,20 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { AuthContext } from "@/providers/auth";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-export const Route = createRootRoute({
+interface MyRouterContext {
+  auth: AuthContext;
+}
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
       <nav className="text-center p-2">
         <h1 className="text-xl">BoredBundle</h1>
       </nav>
       <hr />
-      <Outlet />
+      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <Outlet />
+      </div>
       {import.meta.env.MODE === "development" && <TanStackRouterDevtools />}
     </>
   ),

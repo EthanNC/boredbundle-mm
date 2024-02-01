@@ -5,6 +5,7 @@ import * as React from "react";
 import { client } from "@/lib/client";
 import { api } from "../../convex/_generated/api";
 import { z } from "zod";
+import { useAuth } from "@/providers/auth";
 
 export const Route = createFileRoute("/")({
   validateSearch: z.object({
@@ -62,32 +63,35 @@ function JoinGameScreen({ routeError }: { routeError?: string }) {
     }
   }, [code, loader]);
 
+  const auth = useAuth();
+  if (auth.isAuthenticated) {
+    router.history.push(`/game/${auth.game}`);
+  }
+  console.log("JoinGameScreen -> auth", auth);
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mb-6 text-center text-3xl ">Play MemeMaker</h2>
-          <div className="flex-1 border-b-2 border-gray-300"></div>
-          {error && <p className="text-red-600 text-center">{error}</p>}
-          <form
-            onSubmit={onSubmit}
-            className="flex items-center justify-between p-2"
-          >
-            <label htmlFor="code" className="text-lg font-bold">
-              Enter Game Code
-            </label>
-            <Input
-              name="code"
-              type="text"
-              className="w-36 h-10"
-              placeholder="code"
-              onChange={() => setError(null)}
-            />
-            <Button type="submit">JOIN</Button>
-          </form>
-        </div>
-        <div></div>
+    <div className="max-w-md w-full space-y-8">
+      <div>
+        <h2 className="mb-6 text-center text-3xl ">Play MemeMaker</h2>
+        <div className="flex-1 border-b-2 border-gray-300"></div>
+        {error && <p className="text-red-600 text-center">{error}</p>}
+        <form
+          onSubmit={onSubmit}
+          className="flex items-center justify-between p-2"
+        >
+          <label htmlFor="code" className="text-lg font-bold">
+            Enter Game Code
+          </label>
+          <Input
+            name="code"
+            type="text"
+            className="w-36 h-10"
+            placeholder="code"
+            onChange={() => setError(null)}
+          />
+          <Button type="submit">JOIN</Button>
+        </form>
       </div>
+      <div></div>
     </div>
   );
 }

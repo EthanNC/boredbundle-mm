@@ -1,16 +1,13 @@
 import { client } from "@/lib/client";
 import { flushSync } from "react-dom";
-import {
-  createFileRoute,
-  getRouteApi,
-  useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { api } from "../../convex/_generated/api";
 import React from "react";
 import { useAuth } from "@/providers/auth";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "convex/react";
 
 export const Route = createFileRoute("/game/$code")({
   validateSearch: z.object({
@@ -23,32 +20,37 @@ export const Route = createFileRoute("/game/$code")({
   component: GameLogin,
 });
 
-const routeApi = getRouteApi("/game/$code");
-
 function GameLogin() {
   const auth = useAuth();
-  const navigate = useNavigate();
-  const { code } = routeApi.useParams();
+  const { code } = Route.useParams();
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [name, setName] = React.useState("");
+  const createUser = useMutation(api.users.create);
+  const router = useRouter();
 
-  const search = routeApi.useSearch();
-
-  const handleLogin = (evt: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    evt.isPropagationStopped();
     setIsSubmitting(true);
     // mutation to create and user and add them to userId on game
+    const user = await createUser({ name: name, gameId: code });
     flushSync(() => {
       auth.setUser(name);
       auth.setGame(code);
+      auth.setId(user);
     });
-
-    void navigate({ to: search.redirect });
   };
+
+  React.useLayoutEffect(() => {
+    if (auth.isAuthenticated) {
+      router.history.push("/game/play");
+    }
+  }, [auth.isAuthenticated]);
 
   return (
     <div className="p-2">
+      {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
       <form className="mt-4" onSubmit={handleLogin}>
         <fieldset
           disabled={isSubmitting}

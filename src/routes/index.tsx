@@ -1,13 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  notFound,
+  redirect,
+  useRouter,
+} from "@tanstack/react-router";
 import * as React from "react";
 import { client } from "@/lib/client";
 import { api } from "../../convex/_generated/api";
 import { z } from "zod";
-import { useAuth } from "@/providers/auth";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: ({ context }) => {
+    if (context.auth.isAuthenticated) {
+      throw redirect({
+        to: "/game/play",
+      });
+    }
+  },
   validateSearch: z.object({
     code: z.string().length(5).or(z.number()).optional(),
   }),
@@ -63,11 +74,6 @@ function JoinGameScreen({ routeError }: { routeError?: string }) {
     }
   }, [code, loader]);
 
-  const auth = useAuth();
-  if (auth.isAuthenticated) {
-    router.history.push(`/game/${auth.game}`);
-  }
-  console.log("JoinGameScreen -> auth", auth);
   return (
     <div className="max-w-md w-full space-y-8">
       <div>

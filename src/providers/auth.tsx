@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 export interface AuthContext {
   isAuthenticated: boolean;
@@ -13,10 +14,11 @@ export interface AuthContext {
 const AuthContext = React.createContext<AuthContext | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = React.useState<string | null>(null);
-  const [id, setId] = React.useState<string | null>(null);
-  const [game, setGame] = React.useState<string | null>(null);
+  const [user, setUser] = useLocalStorage<AuthContext["user"]>("user", null);
+  const [id, setId] = useLocalStorage<AuthContext["id"]>("id", null);
+  const [game, setGame] = useLocalStorage<AuthContext["game"]>("game", null);
   const isAuthenticated = !!user && !!game && !!id;
+
   return (
     <AuthContext.Provider
       value={{ isAuthenticated, user, setUser, game, setGame, id, setId }}

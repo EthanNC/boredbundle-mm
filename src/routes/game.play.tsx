@@ -1,5 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/game/play')({
-  component: () => <div>Hello /game/play!</div>
-})
+export const Route = createFileRoute("/game/play")({
+  beforeLoad: ({ context }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({
+        to: "/",
+      });
+    }
+  },
+  component: () => <div>Hello /game/play!</div>,
+});

@@ -9,6 +9,7 @@ export interface AuthContext {
   id: string | null;
   game: string | null;
   setGame: (game: string | null) => void;
+  leaveGame: () => void;
 }
 
 const AuthContext = React.createContext<AuthContext | null>(null);
@@ -18,10 +19,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [id, setId] = useLocalStorage<AuthContext["id"]>("id", null);
   const [game, setGame] = useLocalStorage<AuthContext["game"]>("game", null);
   const isAuthenticated = !!user && !!game && !!id;
+  const leaveGame = () => {
+    setUser(null);
+    setId(null);
+    setGame(null);
+  };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, setUser, game, setGame, id, setId }}
+      value={{
+        leaveGame,
+        isAuthenticated,
+        user,
+        setUser,
+        game,
+        setGame,
+        id,
+        setId,
+      }}
     >
       {children}
     </AuthContext.Provider>

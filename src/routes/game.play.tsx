@@ -1,4 +1,6 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/providers/auth";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/game/play")({
   beforeLoad: ({ context }) => {
@@ -8,5 +10,23 @@ export const Route = createFileRoute("/game/play")({
       });
     }
   },
-  component: () => <div>Hello /game/play!</div>,
+  component: () => <PlayGameScreen />,
 });
+
+function PlayGameScreen() {
+  const { leaveGame } = useAuth();
+  const navigate = useNavigate();
+  return (
+    <div>
+      Hello /game/play!
+      <Button
+        onClick={() => {
+          leaveGame();
+          void navigate({ to: "/" });
+        }}
+      >
+        Leave Game
+      </Button>
+    </div>
+  );
+}

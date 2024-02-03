@@ -10,9 +10,11 @@
     "predev": "convex dev --until-success && convex dashboard",
     "build": "vite build",
     "lint": "tsc && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed": "convex dev --run seed --until-success"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.0",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { client } from "@/lib/client";
 import { useAuth } from "@/providers/auth";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { api } from "../../convex/_generated/api";
@@ -25,6 +24,7 @@ function PlayGameScreen() {
     tokenIdentifier: game as string,
   });
   const serverLeaveGame = useMutation(api.games.leaveGame);
+  const serverStartGame = useMutation(api.games.startGame);
 
   return (
     <div className="flex flex-col items-center gap-10">
@@ -41,7 +41,18 @@ function PlayGameScreen() {
       </div>
 
       <div className="flex gap-2">
-        <Button onClick={() => {}}>Start Game</Button>
+        {(gameData?.users?.length ?? 0) > 3 &&
+          gameData?.users?.at(0)?.id === (id as string) && (
+            <Button
+              onClick={() => {
+                void serverStartGame({
+                  gameId: game as string,
+                });
+              }}
+            >
+              Start Game
+            </Button>
+          )}
         <Button
           onClick={() => {
             void serverLeaveGame({

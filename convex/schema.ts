@@ -13,5 +13,6 @@ export default defineSchema({
       )
     ),
     tokenIdentifier: v.string(),
+    started: v.boolean(),
   }).index("by_token", ["tokenIdentifier"]),
 });

@@ -8,6 +8,7 @@ export const createGame = internalMutation({
       body,
       users: [],
       tokenIdentifier: gameId,
+      started: false,
     });
   },
 });

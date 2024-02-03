@@ -77,8 +77,6 @@ function JoinGameScreen({ routeError }: { routeError?: string }) {
   return (
     <div className="max-w-md w-full space-y-8">
       <div>
-        <h2 className="mb-6 text-center text-3xl ">Play MemeMaker</h2>
-        <div className="flex-1 border-b-2 border-gray-300"></div>
         {error && <p className="text-red-600 text-center">{error}</p>}
         <form
           onSubmit={onSubmit}

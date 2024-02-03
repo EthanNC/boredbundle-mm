@@ -1,4 +1,3 @@
-import { client } from "@/lib/client";
 import { flushSync } from "react-dom";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { api } from "../../convex/_generated/api";
@@ -7,16 +6,12 @@ import { useAuth } from "@/providers/auth";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { useAction, useMutation } from "convex/react";
+import { useAction } from "convex/react";
 
 export const Route = createFileRoute("/game/$code")({
   validateSearch: z.object({
     redirect: z.string().catch("/"),
   }),
-  loader: async ({ params }) =>
-    await client.query(api.games.get, {
-      tokenIdentifier: params.code.toString(),
-    }),
   component: GameLogin,
 });
 

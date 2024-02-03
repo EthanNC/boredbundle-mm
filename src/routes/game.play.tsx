@@ -4,7 +4,7 @@ import { useAuth } from "@/providers/auth";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { api } from "../../convex/_generated/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 
 export const Route = createFileRoute("/game/play")({
   beforeLoad: ({ context }) => {
@@ -14,19 +14,18 @@ export const Route = createFileRoute("/game/play")({
       });
     }
   },
-  loader: async ({ context }) =>
-    await client.query(api.games.get, {
-      tokenIdentifier: context.auth.game as string,
-    }),
   component: () => <PlayGameScreen />,
 });
 
 function PlayGameScreen() {
   const { leaveGame, id, game } = useAuth();
   const navigate = useNavigate();
-  const gameData = Route.useLoaderData();
+
+  const gameData = useQuery(api.games.get, {
+    tokenIdentifier: game as string,
+  });
   const serverLeaveGame = useMutation(api.games.leaveGame);
-  console.log(gameData);
+
   return (
     <div className="flex flex-col items-center gap-10">
       <h2 className="mb-6 text-center text-3xl ">MemeLords</h2>

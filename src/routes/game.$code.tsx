@@ -7,7 +7,7 @@ import { useAuth } from "@/providers/auth";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 
 export const Route = createFileRoute("/game/$code")({
   validateSearch: z.object({
@@ -26,7 +26,7 @@ function GameLogin() {
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [name, setName] = React.useState("");
-  const createUser = useMutation(api.users.create);
+  const createUser = useAction(api.actions.createUser);
   const router = useRouter();
 
   const handleLogin = async (evt: React.FormEvent<HTMLFormElement>) => {

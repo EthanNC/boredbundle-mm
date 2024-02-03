@@ -8,10 +8,23 @@ export const createGame = action({
   args: { body: v.string() },
   handler: async (ctx, { body }) => {
     const gameId = ulid().slice(-5);
-    await ctx.runMutation(internal.myFunctions.create, {
+    await ctx.runMutation(internal.myFunctions.createGame, {
       body: body,
       gameId: gameId,
     });
     return gameId;
+  },
+});
+
+export const createUser = action({
+  args: { name: v.string(), gameId: v.string() },
+  handler: async (ctx, { name, gameId }) => {
+    const userId = ulid();
+    await ctx.runMutation(internal.myFunctions.createUser, {
+      name: name,
+      gameId: gameId,
+      userId: userId,
+    });
+    return userId;
   },
 });

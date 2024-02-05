@@ -4,6 +4,7 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { api } from "../../convex/_generated/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMutation, useQuery } from "convex/react";
+import { getImage } from "@/lib/utils";
 
 export const Route = createFileRoute("/game/play")({
   beforeLoad: ({ context }) => {
@@ -32,8 +33,10 @@ function PlayGameScreen() {
       <div className="grid grid-cols-2 gap-4">
         {gameData?.users?.map((user) => (
           <div key={user.id}>
-            <Skeleton
-              className={`w-40 h-40 ${user.id === id && "border-white border-2"}`}
+            <img
+              src={getImage(user.image)}
+              className="w-24 h-24 rounded-full mx-auto"
+              alt={`Avatar ${user.image}`}
             />
             <p className="text-center">{user.name}</p>
           </div>

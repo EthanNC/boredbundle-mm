@@ -14,8 +14,13 @@ export const createGame = internalMutation({
 });
 
 export const createUser = internalMutation({
-  args: { name: v.string(), gameId: v.string(), userId: v.string() },
-  handler: async (ctx, { name, gameId, userId }) => {
+  args: {
+    name: v.string(),
+    gameId: v.string(),
+    userId: v.string(),
+    image: v.string(),
+  },
+  handler: async (ctx, { name, gameId, userId, image }) => {
     const game = await ctx.db
       .query("games")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", gameId))
@@ -24,6 +29,7 @@ export const createUser = internalMutation({
     const user = {
       id: userId,
       name,
+      image,
     };
 
     if (game) {

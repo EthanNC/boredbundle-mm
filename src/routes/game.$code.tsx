@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useAction } from "convex/react";
+import AvatarCarousel from "@/components/AvatarCarousel";
 
 export const Route = createFileRoute("/game/$code")({
   validateSearch: z.object({
@@ -21,6 +22,7 @@ function GameLogin() {
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [name, setName] = React.useState("");
+  const [avatar, setAvatar] = React.useState("");
   const createUser = useAction(api.actions.createUser);
   const router = useRouter();
 
@@ -29,7 +31,7 @@ function GameLogin() {
     evt.isPropagationStopped();
     setIsSubmitting(true);
     // mutation to create and user and add them to userId on game
-    const user = await createUser({ name: name, gameId: code });
+    const user = await createUser({ name: name, gameId: code, image: avatar });
     flushSync(() => {
       auth.setUser(name);
       auth.setGame(code);
@@ -44,7 +46,8 @@ function GameLogin() {
   }, [auth.isAuthenticated]);
 
   return (
-    <div className="p-2">
+    <div className="flex flex-col items-center p-2">
+      <AvatarCarousel setImage={setAvatar} />
       {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
       <form className="mt-4" onSubmit={handleLogin}>
         <fieldset
@@ -55,6 +58,7 @@ function GameLogin() {
             <label htmlFor="username-input" className="text-sm font-medium">
               Username
             </label>
+
             <Input
               id="username-input"
               type="text"

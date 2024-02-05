@@ -18,7 +18,7 @@ export function fr<T = HTMLElement, P = React.HTMLAttributes<T>>(
 // styled element
 export function se<
   T = HTMLElement,
-  P extends React.HTMLAttributes<T> = React.HTMLAttributes<T>
+  P extends React.HTMLAttributes<T> = React.HTMLAttributes<T>,
 >(Tag: keyof React.ReactHTML, ...classNames: ClassValue[]) {
   const component = fr<T, P>(({ className, ...props }, ref) => (
     // @ts-expect-error Too complicated for TypeScript
@@ -27,3 +27,7 @@ export function se<
   component.displayName = Tag[0].toUpperCase() + Tag.slice(1);
   return component;
 }
+
+export const getImage = (name: string) => {
+  return new URL(`../assets/${name}`, import.meta.url).href;
+};

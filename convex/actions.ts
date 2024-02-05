@@ -17,13 +17,14 @@ export const createGame = action({
 });
 
 export const createUser = action({
-  args: { name: v.string(), gameId: v.string() },
-  handler: async (ctx, { name, gameId }) => {
+  args: { name: v.string(), gameId: v.string(), image: v.string() },
+  handler: async (ctx, { name, gameId, image }) => {
     const userId = ulid();
     await ctx.runMutation(internal.myFunctions.createUser, {
       name: name,
       gameId: gameId,
       userId: userId,
+      image: image,
     });
     return userId;
   },

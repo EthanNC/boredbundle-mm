@@ -9,6 +9,7 @@ export default defineSchema({
         v.object({
           id: v.string(),
           name: v.string(),
+          image: v.string(),
         })
       )
     ),

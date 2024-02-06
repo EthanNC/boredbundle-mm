@@ -18,6 +18,7 @@ import type * as actions from "../actions.js";
 import type * as games from "../games.js";
 import type * as http from "../http.js";
 import type * as myFunctions from "../myFunctions.js";
+import type * as queries from "../queries.js";
 import type * as seed from "../seed.js";
 
 /**
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   games: typeof games;
   http: typeof http;
   myFunctions: typeof myFunctions;
+  queries: typeof queries;
   seed: typeof seed;
 }>;
 export declare const api: FilterApi<

@@ -39,3 +39,10 @@ export const createUser = internalMutation({
     return user;
   },
 });
+
+export const sendGifMessage = internalMutation({
+  args: { body: v.string(), gameId: v.id("games") },
+  handler: async (ctx, { body, gameId }) => {
+    return await ctx.db.patch(gameId, { body: body });
+  },
+});

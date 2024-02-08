@@ -13,7 +13,24 @@ export default defineSchema({
         })
       )
     ),
+    submissions: v.optional(
+      v.array(v.object({ id: v.string(), url: v.string() }))
+    ),
     tokenIdentifier: v.string(),
     started: v.boolean(),
   }).index("by_token", ["tokenIdentifier"]),
+
+  memes: defineTable({
+    id: v.string(),
+    name: v.string(),
+    url: v.string(),
+    width: v.number(),
+    height: v.number(),
+    box_count: v.number(),
+    captions: v.number(),
+    // gameId: v.id("games"),
+    // userId: v.string(),
+  }).searchIndex("search_name", {
+    searchField: "name",
+  }),
 });

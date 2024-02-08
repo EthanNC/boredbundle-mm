@@ -16,7 +16,9 @@ import type {
 } from "convex/server";
 import type * as actions from "../actions.js";
 import type * as games from "../games.js";
+import type * as giphy from "../giphy.js";
 import type * as http from "../http.js";
+import type * as memes from "../memes.js";
 import type * as myFunctions from "../myFunctions.js";
 import type * as queries from "../queries.js";
 import type * as seed from "../seed.js";
@@ -32,7 +34,9 @@ import type * as seed from "../seed.js";
 declare const fullApi: ApiFromModules<{
   actions: typeof actions;
   games: typeof games;
+  giphy: typeof giphy;
   http: typeof http;
+  memes: typeof memes;
   myFunctions: typeof myFunctions;
   queries: typeof queries;
   seed: typeof seed;

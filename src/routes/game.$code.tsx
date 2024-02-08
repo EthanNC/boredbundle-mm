@@ -43,7 +43,7 @@ function GameLogin() {
     if (auth.isAuthenticated) {
       router.history.push("/game/play");
     }
-  }, [auth.isAuthenticated]);
+  }, [auth.isAuthenticated, router.history]);
 
   return (
     <div className="flex flex-col items-center p-2">

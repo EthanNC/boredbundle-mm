@@ -49,6 +49,7 @@ function JoinGameScreen({ routeError }: { routeError?: string }) {
   const router = useRouter();
   const loader = Route.useLoaderData();
   const code = Route.useSearch().code;
+  const [room, setRoom] = React.useState("");
   const [error, setError] = React.useState<string | null>(routeError || null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -90,7 +91,8 @@ function JoinGameScreen({ routeError }: { routeError?: string }) {
             type="text"
             className="w-36 h-10"
             placeholder="code"
-            onChange={() => setError(null)}
+            value={room}
+            onChange={(e) => setRoom(e.target.value.toUpperCase())}
           />
           <Button type="submit">JOIN</Button>
         </form>

@@ -60,3 +60,16 @@ export const sendGif = action({
     });
   },
 });
+
+// Post a GIF chat message corresponding to the query string.
+
+export const setGameStage = action({
+  args: { gameId: v.string(), stage: v.string() },
+  handler: async (ctx, { gameId, stage }) => {
+    await ctx.runMutation(internal.myFunctions.updateGameStage, {
+      gameId: gameId,
+      stage: stage,
+    });
+    return gameId;
+  },
+});

@@ -63,7 +63,7 @@ function GameLogin() {
               id="username-input"
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value.toUpperCase())}
               className="border border-gray-300 rounded-md p-2 w-full"
               required
             />

@@ -29,7 +29,7 @@ function PlayGameScreen() {
 
   useLayoutEffect(() => {
     if (gameData?.started) {
-      void navigate({ to: "/game/start" });
+      void navigate({ to: "/game/prompts" });
     }
   }, [gameData?.started]);
 

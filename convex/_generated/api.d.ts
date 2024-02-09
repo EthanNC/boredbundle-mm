@@ -20,6 +20,7 @@ import type * as giphy from "../giphy.js";
 import type * as http from "../http.js";
 import type * as memelords_actions from "../memelords/actions.js";
 import type * as memelords_prompt_functions from "../memelords/prompt_functions.js";
+import type * as memes from "../memes.js";
 import type * as myFunctions from "../myFunctions.js";
 import type * as queries from "../queries.js";
 import type * as seed from "../seed.js";
@@ -37,6 +38,9 @@ declare const fullApi: ApiFromModules<{
   games: typeof games;
   giphy: typeof giphy;
   http: typeof http;
+  "memelords/actions": typeof memelords_actions;
+  "memelords/prompt_functions": typeof memelords_prompt_functions;
+  memes: typeof memes;
   myFunctions: typeof myFunctions;
   queries: typeof queries;
   seed: typeof seed;

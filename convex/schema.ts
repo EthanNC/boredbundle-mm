@@ -4,6 +4,7 @@ import { v } from "convex/values";
 export default defineSchema({
   games: defineTable({
     body: v.string(),
+    stage: v.string(),
     users: v.optional(
       v.array(
         v.object({

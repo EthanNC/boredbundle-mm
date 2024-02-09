@@ -29,3 +29,15 @@ export const createUser = action({
     return userId;
   },
 });
+
+export const setGameStage = action({
+  args: { gameId: v.string(), stage: v.string() },
+  handler: async (ctx, { gameId, stage }) => {
+    
+    await ctx.runMutation(internal.myFunctions.updateGameStage, {      
+      gameId: gameId,
+      stage: stage
+    });
+    return gameId;
+  },
+});

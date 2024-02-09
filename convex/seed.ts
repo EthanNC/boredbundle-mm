@@ -25,6 +25,7 @@ export default internalMutation({
     }));
     await ctx.db.insert("games", {
       body: "test",
+      stage: "",
       users: [...users],
       tokenIdentifier: "testr",
       started: false,

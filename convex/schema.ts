@@ -16,5 +16,34 @@ export default defineSchema({
     ),
     tokenIdentifier: v.string(),
     started: v.boolean(),
+    game_data: v.optional(v.object({
+      prompts: v.optional(
+                  v.array(
+                    v.array(v.object({
+                      userId: v.string(),
+                      text: v.string()
+                    }))
+                  )
+                ),
+      submissions: 
+                  v.optional(
+                    v.array(
+                      v.array(v.object({
+                        userId: v.string(),
+                        promptIndex: v.number(),
+                        imgUrl: v.optional(v.string()),
+                        text: v.array(
+                                v.object({
+                                  text: v.string(),
+                                  x: v.optional(v.number()),
+                                  y: v.optional(v.number()),
+                                  color: v.optional(v.string()),
+                                  size: v.optional(v.number())
+                                })
+                              ),                        
+                      }))
+                    )
+                  )
+    }))
   }).index("by_token", ["tokenIdentifier"]),
 });

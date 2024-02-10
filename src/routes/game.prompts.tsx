@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/providers/auth";
 import { X } from "lucide-react";
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
 
 export const Route = createFileRoute("/game/prompts")({
   component: () => <GamePromptsScreen />,
@@ -48,10 +50,12 @@ function useZodForm<TSchema extends z.ZodType>(
 }
 
 function GamePromptsScreen() {
-  const { id } = useAuth();
+  const { id, game } = useAuth();
   const promptsInitial: Prompt[] = [{ userId: id!, text: "water" }];
 
   const [prompts, setPrompts] = useState<Prompt[]>(() => promptsInitial);
+
+  const addPrompt = useMutation(api.memelords.prompt_functions.addPrompt);
 
   const {
     handleSubmit,
@@ -81,10 +85,34 @@ function GamePromptsScreen() {
 
       <form
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(async (data) => {
           console.log(data);
-          setPrompts(data.prompts);
+          //   function* generatePromises() {
+          //     for (const prompt of data.prompt) {
+          //       yield addPrompt({
+          //         gameId: game as string,
+          //         id: prompt.id as string,
+          //         // add other properties of prompt if needed
+          //       });
+          //     }
+          //   }
+          const promises = data.prompts.map((prompt, index) =>
+            addPrompt({
+              gameId: game as string,
+              userId: id as string,
+              stageNum: index + 1,
+              prompt: prompt.text,
+            })
+          );
 
+          //   const promises = Array.from(generatePromises());
+
+          try {
+            const results = await Promise.all(promises);
+            //if successful
+          } catch (error) {
+            // handle error
+          }
           reset(data);
           void navigation({ to: "/game/start" });
         })}

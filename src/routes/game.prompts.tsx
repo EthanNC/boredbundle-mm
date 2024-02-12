@@ -27,8 +27,7 @@ const validationSchema = z.object({
           }),
       })
     )
-    .min(0)
-    .max(3),
+    .length(3, { message: "You need to write 3 prompts" }),
 });
 
 type Prompt = z.infer<typeof validationSchema>["prompts"][number];
@@ -127,14 +126,14 @@ function GamePromptsScreen() {
                   {...register(`prompts.${index}.text` as const)}
                   defaultValue={field.text}
                 />
-                <Button
+                {/* <Button
                   disabled={fields.length === 1}
                   size="icon"
                   variant="outline"
                   onClick={() => remove(index)}
                 >
                   <X />
-                </Button>
+                </Button> */}
               </div>
               {errorForField && <p>{errorForField?.message ?? <>&nbsp;</>}</p>}
             </div>
@@ -155,9 +154,11 @@ function GamePromptsScreen() {
           </Button>
         )}
 
-        <Button type="submit" disabled={!isSubmittable}>
-          Submit
-        </Button>
+        {fields.length === 3 && (
+          <Button type="submit" disabled={!isSubmittable}>
+            Submit
+          </Button>
+        )}
       </form>
     </div>
   );

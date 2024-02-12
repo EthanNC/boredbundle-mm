@@ -140,6 +140,7 @@ function GameStart() {
                     const Meme = searchResults.find(
                       (meme) => meme.name === memeRef.current!.value
                     );
+                    setSearchText("");
                     setSelectedMeme(Meme);
                     setGenReady(true);
                   }}

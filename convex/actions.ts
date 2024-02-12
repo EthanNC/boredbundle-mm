@@ -30,13 +30,45 @@ export const createUser = action({
   },
 });
 
+function giphyUrl(queryString: string) {
+  return (
+    "https://api.giphy.com/v1/gifs/translate?api_key=" +
+    process.env.GIPHY_API_KEY +
+    "&s=" +
+    encodeURIComponent(queryString)
+  );
+}
+
+// Post a GIF chat message corresponding to the query string.
+export const sendGif = action({
+  args: { queryString: v.string(), gameId: v.id("games") },
+  handler: async (ctx, { queryString, gameId }) => {
+    // Fetch GIF url from GIPHY.
+    const data = await fetch(giphyUrl(queryString));
+    const json = await data.json();
+    if (!data.ok) {
+      throw new Error(
+        `Giphy errored: ${JSON.stringify(json)}, ${process.env.GIPHY_API_KEY}`
+      );
+    }
+    const gifEmbedUrl = json.data.embed_url;
+
+    // Write GIF url to Convex.
+    await ctx.runMutation(internal.myFunctions.sendGifMessage, {
+      body: gifEmbedUrl,
+      gameId: gameId,
+    });
+  },
+});
+
+// Post a GIF chat message corresponding to the query string.
+
 export const setGameStage = action({
   args: { gameId: v.string(), stage: v.string() },
   handler: async (ctx, { gameId, stage }) => {
-    
-    await ctx.runMutation(internal.myFunctions.updateGameStage, {      
+    await ctx.runMutation(internal.myFunctions.updateGameStage, {
       gameId: gameId,
-      stage: stage
+      stage: stage,
     });
     return gameId;
   },

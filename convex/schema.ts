@@ -14,36 +14,58 @@ export default defineSchema({
         })
       )
     ),
+    submissions: v.optional(
+      v.array(v.object({ id: v.string(), url: v.string() }))
+    ),
     tokenIdentifier: v.string(),
     started: v.boolean(),
-    game_data: v.optional(v.object({
-      prompts: v.optional(
-                  v.array(
-                    v.array(v.object({
-                      userId: v.string(),
-                      text: v.string()
-                    }))
-                  )
+    game_data: v.optional(
+      v.object({
+        prompts: v.optional(
+          v.array(
+            v.array(
+              v.object({
+                userId: v.string(),
+                text: v.string(),
+              })
+            )
+          )
+        ),
+        submissions: v.optional(
+          v.array(
+            v.array(
+              v.object({
+                userId: v.string(),
+                promptIndex: v.number(),
+                imgUrl: v.optional(v.string()),
+                text: v.array(
+                  v.object({
+                    text: v.string(),
+                    x: v.optional(v.number()),
+                    y: v.optional(v.number()),
+                    color: v.optional(v.string()),
+                    size: v.optional(v.number()),
+                  })
                 ),
-      submissions: 
-                  v.optional(
-                    v.array(
-                      v.array(v.object({
-                        userId: v.string(),
-                        promptIndex: v.number(),
-                        imgUrl: v.optional(v.string()),
-                        text: v.array(
-                                v.object({
-                                  text: v.string(),
-                                  x: v.optional(v.number()),
-                                  y: v.optional(v.number()),
-                                  color: v.optional(v.string()),
-                                  size: v.optional(v.number())
-                                })
-                              ),                        
-                      }))
-                    )
-                  )
-    }))
+              })
+            )
+          )
+        ),
+      })
+    ),
   }).index("by_token", ["tokenIdentifier"]),
+
+  memes: defineTable({
+    id: v.string(),
+    name: v.string(),
+    url: v.string(),
+    width: v.number(),
+    height: v.number(),
+    box_count: v.number(),
+    captions: v.number(),
+    // gameId: v.id("games"),
+    // userId: v.string(),
+  }).searchIndex("search_name", {
+    searchField: "name",
+  }),
 });

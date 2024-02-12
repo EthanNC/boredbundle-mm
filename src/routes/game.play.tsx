@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/providers/auth";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { api } from "../../convex/_generated/api";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useMutation, useQuery } from "convex/react";
 import { getImage } from "@/lib/utils";
+import { useLayoutEffect } from "react";
 
 export const Route = createFileRoute("/game/play")({
   beforeLoad: ({ context }) => {
@@ -26,6 +26,12 @@ function PlayGameScreen() {
   });
   const serverLeaveGame = useMutation(api.games.leaveGame);
   const serverStartGame = useMutation(api.games.startGame);
+
+  useLayoutEffect(() => {
+    if (gameData?.started) {
+      void navigate({ to: "/game/prompts" });
+    }
+  }, [gameData?.started]);
 
   return (
     <div className="flex flex-col items-center gap-10">

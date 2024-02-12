@@ -41,17 +41,23 @@ export const createUser = internalMutation({
   },
 });
 
+export const sendGifMessage = internalMutation({
+  args: { body: v.string(), gameId: v.id("games") },
+  handler: async (ctx, { body, gameId }) => {
+    return await ctx.db.patch(gameId, { body: body });
+  },
+});
+
 export const updateGameStage = internalMutation({
   args: {
     gameId: v.string(),
     stage: v.string(),
   },
-  handler: async (ctx, { gameId, stage}) => {
+  handler: async (ctx, { gameId, stage }) => {
     const game = await ctx.db
       .query("games")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", gameId))
       .unique();
-    
 
     if (game) {
       return await ctx.db.patch(game._id, { stage: stage });

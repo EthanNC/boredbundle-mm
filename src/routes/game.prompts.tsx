@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/providers/auth";
-import { X } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
@@ -52,7 +51,7 @@ function GamePromptsScreen() {
   const { id, game } = useAuth();
   const promptsInitial: Prompt[] = [{ userId: id!, text: "water" }];
 
-  const [prompts, setPrompts] = useState<Prompt[]>(() => promptsInitial);
+  const [prompts] = useState<Prompt[]>(() => promptsInitial);
 
   const addPrompt = useMutation(api.memelords.prompt_functions.addPrompt);
 
@@ -68,7 +67,7 @@ function GamePromptsScreen() {
     mode: "onChange",
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     name: "prompts",
     control,
   });
@@ -85,16 +84,6 @@ function GamePromptsScreen() {
       <form
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit(async (data) => {
-          console.log(data);
-          //   function* generatePromises() {
-          //     for (const prompt of data.prompt) {
-          //       yield addPrompt({
-          //         gameId: game as string,
-          //         id: prompt.id as string,
-          //         // add other properties of prompt if needed
-          //       });
-          //     }
-          //   }
           const promises = data.prompts.map((prompt, index) =>
             addPrompt({
               gameId: game as string,
@@ -104,13 +93,12 @@ function GamePromptsScreen() {
             })
           );
 
-          //   const promises = Array.from(generatePromises());
-
           try {
-            const results = await Promise.all(promises);
+            //TDOD: handle error
+            await Promise.all(promises);
             //if successful
           } catch (error) {
-            // handle error
+            console.error(error);
           }
           reset(data);
           void navigation({ to: "/game/start" });

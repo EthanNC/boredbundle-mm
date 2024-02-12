@@ -26,12 +26,14 @@ export const Route = createFileRoute("/game/start")({
 
 function GameStart() {
   const { id, game } = useAuth();
-  const gameData = useQuery(api.games.get, {
-    tokenIdentifier: game as string,
-  });
+  // const gameData = useQuery(api.games.get, {
+  //   tokenIdentifier: game as string,
+  // });
 
+  const createMeme = useAction(api.memelords.actions.createMeme);
   const [searchText, setSearchText] = useDebounceValue("", 500);
   const [selectedMeme, setSelectedMeme] = useState<Meme | undefined>(undefined);
+  const [genReady, setGenReady] = useState(false);
 
   const { results, status, loadMore } = usePaginatedQuery(
     api.memes.list,
@@ -49,9 +51,27 @@ function GameStart() {
     }
   };
 
+  const generateMeme = async () => {
+    if (selectedMeme) {
+      const url = await createMeme({
+        userId: id as string,
+        gameId: game as string,
+        imgId: selectedMeme.id,
+        promptIndex: 0,
+        text: ["breakfast in the morning", "breakfast for dinner"],
+      });
+      const updatedMeme = { ...selectedMeme, url };
+      setSelectedMeme(updatedMeme);
+    }
+  };
+
   return (
     <div>
-      {selectedMeme && <img src={selectedMeme.url} alt="selected meme" />}
+      {selectedMeme && (
+        <img src={selectedMeme.url} className="w-60" alt="selected meme" />
+      )}
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      {genReady && <Button onClick={generateMeme}>Generate Meme</Button>}
       <Drawer>
         <DrawerTrigger asChild>
           <Button variant="outline">Choose a Meme</Button>
@@ -121,6 +141,7 @@ function GameStart() {
                       (meme) => meme.name === memeRef.current!.value
                     );
                     setSelectedMeme(Meme);
+                    setGenReady(true);
                   }}
                 >
                   Submit

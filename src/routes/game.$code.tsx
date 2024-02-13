@@ -41,7 +41,7 @@ function GameLogin() {
 
   React.useLayoutEffect(() => {
     if (auth.isAuthenticated) {
-      router.history.push("/game/play");
+      router.history.push("/game/lobby");
     }
   }, [auth.isAuthenticated, router.history]);
 

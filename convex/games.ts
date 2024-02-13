@@ -45,3 +45,17 @@ export const startGame = mutation({
     }
   },
 });
+
+export const resetGame = mutation({
+  args: { gameId: v.string() },
+  handler: async (ctx, { gameId }) => {
+    const game = await ctx.db
+      .query("games")
+      .filter((q) => q.eq(q.field("tokenIdentifier"), gameId))
+      .unique();
+
+    if (game) {
+      await ctx.db.patch(game._id, { started: false });
+    }
+  },
+});

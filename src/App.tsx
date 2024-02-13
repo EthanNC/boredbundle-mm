@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useAction, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Link } from "@/components/typography/link";
 import { Input } from "./components/ui/input";
@@ -7,21 +7,24 @@ import { useAuth } from "./providers/auth";
 import { useNavigate } from "@tanstack/react-router";
 
 function App() {
-  // const findGame = useQuery(api.games.get, { tokenIdentifier: "numbers" });
   const listGames = useQuery(api.games.list);
   const auth = useAuth();
   const navigate = useNavigate();
   const createGame = useAction(api.actions.createGame);
-  // const addNumber = useMutation(api.myFunctions.addNumber);
+  const resetGame = useMutation(api.games.resetGame);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const target = e.target as typeof e.target & {
       user: { value: string };
     };
     e.preventDefault();
-    auth.setGame("testr");
+    auth.setGame("TESTR");
     auth.setId(target.user.value);
     auth.setUser("Test User");
-    void navigate({ to: "/game/play" });
+    void navigate({
+      to: "/game/$code",
+      params: { code: "TESTR" },
+      search: true,
+    });
   };
   return (
     <main className="container max-w-2xl flex flex-col gap-8">
@@ -80,7 +83,30 @@ function App() {
       <h2>Games</h2>
       <ul>
         {listGames?.map((game) => (
-          <li key={game._id}>{game.tokenIdentifier}</li>
+          <li key={game._id} className="flex gap-2">
+            {game.tokenIdentifier}
+            {auth.game === game.tokenIdentifier && (
+              <Button
+                onClick={() => {
+                  auth.leaveGame();
+                  void navigate({ to: "/" });
+                }}
+              >
+                Leave Game
+              </Button>
+            )}
+            {game.started ? (
+              <Button
+                onClick={() => {
+                  void resetGame({ gameId: game.tokenIdentifier });
+                }}
+              >
+                Reset Game
+              </Button>
+            ) : (
+              <span>Not started - Host Id is {game.users?.at(0)?.id}</span>
+            )}
+          </li>
         ))}
       </ul>
     </main>

@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "convex/react";
 import { getImage } from "@/lib/utils";
 import { useLayoutEffect } from "react";
 
-export const Route = createFileRoute("/game/play")({
+export const Route = createFileRoute("/game/lobby")({
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({

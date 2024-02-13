@@ -7,7 +7,7 @@ import { Route as TestImport } from './routes/test'
 import { Route as IndexImport } from './routes/index'
 import { Route as GameStartImport } from './routes/game.start'
 import { Route as GamePromptsImport } from './routes/game.prompts'
-import { Route as GamePlayImport } from './routes/game.play'
+import { Route as GameLobbyImport } from './routes/game.lobby'
 import { Route as GameCodeImport } from './routes/game.$code'
 
 // Create/Update Routes
@@ -32,8 +32,8 @@ const GamePromptsRoute = GamePromptsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const GamePlayRoute = GamePlayImport.update({
-  path: '/game/play',
+const GameLobbyRoute = GameLobbyImport.update({
+  path: '/game/lobby',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -58,8 +58,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GameCodeImport
       parentRoute: typeof rootRoute
     }
-    '/game/play': {
-      preLoaderRoute: typeof GamePlayImport
+    '/game/lobby': {
+      preLoaderRoute: typeof GameLobbyImport
       parentRoute: typeof rootRoute
     }
     '/game/prompts': {
@@ -79,7 +79,7 @@ export const routeTree = rootRoute.addChildren([
   IndexRoute,
   TestRoute,
   GameCodeRoute,
-  GamePlayRoute,
+  GameLobbyRoute,
   GamePromptsRoute,
   GameStartRoute,
 ])

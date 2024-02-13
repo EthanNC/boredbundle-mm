@@ -13,7 +13,7 @@ const AvatarArray = [
   "Queen3.png",
   "Bear4.png",
   "King5.png",
-  "Queen6.png"
+  "Queen6.png",
 ];
 
 export default internalMutation({
@@ -27,7 +27,7 @@ export default internalMutation({
       body: "test",
       stage: "",
       users: [...users],
-      tokenIdentifier: "testr",
+      tokenIdentifier: "TESTR",
       started: false,
     });
     return users[0].id;

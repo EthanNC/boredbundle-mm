@@ -149,7 +149,9 @@ function GameStart() {
                 </Button>
               </DrawerClose>
               <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button onClick={() => setSearchText("")} variant="outline">
+                  Cancel
+                </Button>
               </DrawerClose>
             </DrawerFooter>
           </div>
